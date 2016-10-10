@@ -94,15 +94,17 @@ Plug 'vim-scripts/indentpython.vim', { 'for': ['python'] }
 call plug#end()
 " }}}
 
-" Plugin Configs {{{
+" Plugin Enhancements {{{
 
 " Seoul Colors {{{
 colorscheme seoul256
 " }}}
 
 " NerdTree {{{
+  " open up nerd tree with ,n
   nnoremap <leader>n :NERDTreeToggle<CR>
-  let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
+
+  let NERDTreeIgnore=['\.pyc$', '\~$'] " ignore files in NERDTree
 "}}}
 
 " Syntastic {{{
@@ -119,8 +121,11 @@ let g:syntastic_html_tidy_ignore_errors = ['proprietary attribute "ng-']
 " }}}
 
 " Vim-Flake8 {{{
-autocmd BufWritePost *.py call Flake8()
+autocmd BufWritePost *.py call Flake8() " call flake 8 on save
+" }}}
+
+" Git-Fugitive {{{
+set statusline=%{fugitive#statusline()}
 " }}}
 
 "}}}
-
