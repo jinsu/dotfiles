@@ -30,6 +30,7 @@ set showcmd " show command in bottom bar
 set cursorline " hightlight current line
 set lazyredraw " redraw only when we need to.
 set showmatch " highlight matching [{()}]
+set colorcolumn=80 " highlight text beyond 80 chars
 " }}}
 
 " Folding {{{
