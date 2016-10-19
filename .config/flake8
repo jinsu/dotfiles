@@ -1,0 +1,17 @@
+[flake8]
+ignore =
+# E501: ignore column line legth 80
+  E501,
+# W503: line break before binary operator
+  W503,
+  E302,
+  E261,
+  E701,
+  E241,
+  E126,
+  E127,
+  E128,
+  W801,
+  F403,
+  E711,
+  E712
