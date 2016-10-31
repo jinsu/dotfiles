@@ -105,6 +105,13 @@ nnoremap <leader>u :GundoToggle<CR>
 nnoremap <leader>s :mksession! ~/.vim/.vim_session<CR> 
 " load vim session
 nnoremap <leader>w :source ~/.vim/.vim_session<CR>
+
+" window navigation
+nnoremap <C-j> <C-W>j
+nnoremap <C-k> <C-W>k
+nnoremap <C-l> <C-W>l
+nnoremap <C-h> <C-W>h
+
 " }}}
 
 " Plugins {{{
@@ -127,18 +134,21 @@ call plug#end()
 " Plugin Enhancements {{{
 
 " seoul colors {{{
-colorscheme seoul256
-
 " seoul256 (dark):
 " "   Range:   233 (darkest) ~ 239 (lightest)
 " "   Default: 237
 
 let g:seoul256_background = 238
+colorscheme seoul256
+" }}}
+
+" better-whitespace {{{
+nnoremap <leader>w :StripWhitespace<CR>
 " }}}
 
 " nerdtree {{{
   " open up nerd tree with ,n with current dir as the working dir ( % symbol) 
-  nnoremap <leader>t :NERDTreeToggle %<CR>
+  nnoremap <leader>e :NERDTreeToggle %<CR>
   nnoremap <leader>f :NERDTreeFind<CR>
 
   let NERDTreeIgnore=['\.pyc$', '\~$'] " ignore files in NERDTree
@@ -167,4 +177,9 @@ set laststatus=2
 set statusline=%{fugitive#statusline()}
 " }}}
 
+" ctrlp {{{
+let g:ctrlp_custom_ignore = {
+    \ 'dir':  '\.(git|hg|svn)$\|coverage-report\|node_modules',
+    \ 'file': '\.(pyc|exe|so|dat)$'
+    \ }
 "}}}
