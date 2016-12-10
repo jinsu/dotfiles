@@ -1,8 +1,8 @@
 [flake8]
 ignore =
-# E501: ignore column line legth 80
+  # E501: ignore column line legth 80
   E501,
-# W503: line break before binary operator
+  # E503: line break before binary operator
   W503,
   E302,
   E261,
@@ -14,4 +14,10 @@ ignore =
   W801,
   F403,
   E711,
-  E712
+  E712,
+  # E402: module level import not at the top of the file
+  E402,
+  # E731: do not assign a lambda expression, use a def
+  E731,
+  # E266: too many leading '#'
+  E266

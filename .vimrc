@@ -40,7 +40,7 @@ set showcmd " show command in bottom bar
 set cursorline " hightlight current line
 set lazyredraw " redraw only when we need to.
 set showmatch " highlight matching [{()}]
-set colorcolumn=80 " highlight text beyond 80 chars
+set colorcolumn=100 " highlight text beyond 100 chars
 set ttyfast " indicates a fast terminal connection, faster redraw
 set nowrap " no line breaking
 " }}}
@@ -64,6 +64,9 @@ au BufNewFile,BufRead *.py
   \ set autoindent |
   \ set fileformat=unix
 let python_highlight_all=1
+
+au FileType python map <silent> <leader>b oimport pdb; pdb.set_trace()<esc>
+au FileType python map <silent> <leader>B Oimport pdb; pdb.set_trace()<esc>
 
 "python with virtualenv support
 py << EOF
@@ -112,6 +115,8 @@ nnoremap <C-k> <C-W>k
 nnoremap <C-l> <C-W>l
 nnoremap <C-h> <C-W>h
 
+vnoremap <C-i> :call yapf#YAPF()<cr>
+
 " }}}
 
 " Plugins {{{
@@ -126,7 +131,8 @@ Plug 'scrooloose/syntastic'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'vim-scripts/indentpython.vim', { 'for': ['python'] }
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'davidhalter/jedi-vim'
+Plug 'davidhalter/jedi-vim', { 'for': ['python'] }
+Plug 'fisadev/vim-isort', { 'for': ['python'] }
 
 call plug#end()
 " }}}
@@ -160,11 +166,12 @@ set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
  
 let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 0
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_loc_list_height = 5
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_aggregate_errors = 1 " aggregate all errors to one list
-let g:syntastic_javascript_checkers = ['eslint', 'flow', 'jslint']
+let g:syntastic_javascript_checkers = ['eslint', 'flow']
 let g:syntastic_python_checkers = ['python', 'flake8'] 
 let g:syntastic_html_tidy_ignore_errors = ['proprietary attribute "ng-'] 
 " }}}
@@ -183,3 +190,7 @@ let g:ctrlp_custom_ignore = {
     \ 'file': '\.(pyc|exe|so|dat)$'
     \ }
 "}}}
+
+" isort {{{
+let g:vim_isort_map = '<C-o>'
+" }}}
