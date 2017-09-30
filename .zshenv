@@ -9,7 +9,7 @@ function _pygrep() {
 
 function _jsgrep() {
   GIT_ROOT=$(git rev-parse --show-toplevel)
-  grep -Hrni --include '*.py' --include '*.html' --include '*.scss', --include '*.js' \
+  grep -Hrni --color --include '*.html' --include '*.scss', --include '*.js' \
     "$1" $GIT_ROOT/app/static/js/angular $GIT_ROOT/app/templates;
 }
 
