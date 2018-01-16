@@ -194,3 +194,8 @@ let g:ctrlp_custom_ignore = {
 " isort {{{
 let g:vim_isort_map = '<C-o>'
 " }}}
+
+" jedi-vim {{{
+let g:jedi#auto_vim_configuration = 0
+set completeopt=menuone
+" }}}

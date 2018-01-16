@@ -1,0 +1,21 @@
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[user]
+  name = Jinsu Oh
+  email = heyjinsu@gmail.com
+
+[core]
+  editor = vim
+
+[alias]
+  co = checkout
+  br = branch
+  st = status
+  gr = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)[%an]%Creset' --abbrev-commit --date=relative
+  dc = diff --cached --color-words
+  wdiff = diff --color-words
+  pushf = push --force-with-lease
+  local-branch-cleanup = "!f() {git branch --merged origin/master | grep -v '\\*\\|master\\|demo' | xargs -n 1 git branch -d}; f"
