@@ -133,6 +133,7 @@ Plug 'vim-scripts/indentpython.vim', { 'for': ['python'] }
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'davidhalter/jedi-vim', { 'for': ['python'] }
 Plug 'fisadev/vim-isort', { 'for': ['python'] }
+Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'javascript.jsx'] }
 
 call plug#end()
 " }}}
@@ -171,7 +172,7 @@ let g:syntastic_loc_list_height = 5
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_aggregate_errors = 1 " aggregate all errors to one list
-let g:syntastic_javascript_checkers = ['eslint', 'flow']
+let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_python_checkers = ['python', 'flake8'] 
 let g:syntastic_html_tidy_ignore_errors = ['proprietary attribute "ng-'] 
 " }}}
