@@ -69,15 +69,24 @@ au FileType python map <silent> <leader>b oimport pdb; pdb.set_trace()<esc>
 au FileType python map <silent> <leader>B Oimport pdb; pdb.set_trace()<esc>
 
 "python with virtualenv support
-py << EOF
-import os
-import sys
-if 'VIRTUAL_ENV' in os.environ:
-  project_base_dir = os.environ['VIRTUAL_ENV']
-  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-  execfile(activate_this, dict(__file__=activate_this))
-EOF
-" }}}
+" py << EOF
+" import os
+" import sys
+" if 'VIRTUAL_ENV' in os.environ:
+"   project_base_dir = os.environ['VIRTUAL_ENV']
+"   activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+"   execfile(activate_this, dict(__file__=activate_this))
+" EOF
+
+" py3 << EOF
+" import os, sys, pathlib
+" if 'VIRTUAL_ENV' in os.environ:
+"   venv = os.getenv('VIRTUAL_ENV')
+"   site_packages = next(pathlib.Path(venv,
+"   'lib').glob('python*/site-packages'), None)
+"   if site_packages:
+"     sys.path.insert(0, str(site_packages))
+" EOF
 
 " js, html, css, scss files {{{
 au BufNewFile,BufRead *.js,*.html,*.css,*.scss,*.yml
@@ -194,6 +203,7 @@ let g:ctrlp_custom_ignore = {
 
 " isort {{{
 let g:vim_isort_map = '<C-o>'
+let g:vim_isort_python_version = 'python3'
 " }}}
 
 " jedi-vim {{{
