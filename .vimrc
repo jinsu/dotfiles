@@ -14,9 +14,11 @@ set wildmenu " visual autocomplete for command menu
 set encoding=utf-8
 set backspace=indent,eol,start "backspace through newlines
 set clipboard=unnamed " let osx access system clipboard
+" TODO: check existence of .vim/tmp and create
 set directory=~/.vim/tmp/swap// " set swap directory. two slashes at the end ensures complete file path to avoid name collision.
 set backupdir=~/.vim/tmp/backup// " set backup directory.
 set undodir=~/.vim/tmp/undo// " set undo directory
+set mouse=nicr " set mouse scrolling works for iTerm2"
 " autocmd BufEnter * lcd %:p:h " sets working dir to current dir
 " }}}
 
@@ -54,9 +56,10 @@ set foldmethod=indent "fold based on indent level
 
 " Filetype {{{
 filetype plugin indent on " load filetype-specific files
+" }}}
 
 " Python {{{
-au BufNewFile,BufRead *.py 
+au BufNewFile,BufRead *.py
   \ set tabstop=4 |
   \ set softtabstop=4 |
   \ set shiftwidth=4 |
@@ -88,13 +91,20 @@ au FileType python map <silent> <leader>B Oimport pdb; pdb.set_trace()<esc>
 "     sys.path.insert(0, str(site_packages))
 " EOF
 
-" js, html, css, scss files {{{
-au BufNewFile,BufRead *.js,*.html,*.css,*.scss,*.yml
-    \ set tabstop=2 | 
+" 2 tabstop js, html, css, scss, ruby, erb, yml files {{{
+au BufNewFile,BufRead *.js,*.html,*.css,*.scss,*.yml,*.rb,*erb,*yml
+    \ set tabstop=2 |
     \ set softtabstop=2 |
     \ set shiftwidth=2
 " }}}
 
+" 4 tabstop ts {{{
+au BufNewFile,BufRead *.ts
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4
+" }}}
+"
 " vimrc {{{
 autocmd bufwritepost .vimrc source $MYVIMRC
 " }}}
@@ -114,7 +124,7 @@ nnoremap <leader><space> :nohlsearch<CR>
 nnoremap <leader>u :GundoToggle<CR>
 
 " save vim session
-nnoremap <leader>s :mksession! ~/.vim/.vim_session<CR> 
+nnoremap <leader>s :mksession! ~/.vim/.vim_session<CR>
 " load vim session
 nnoremap <leader>w :source ~/.vim/.vim_session<CR>
 
@@ -136,13 +146,21 @@ Plug 'junegunn/seoul256.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'scrooloose/nerdtree'
 Plug 'junegunn/rainbow_parentheses.vim'
-Plug 'scrooloose/syntastic'
+" Plug 'scrooloose/syntastic'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'vim-scripts/indentpython.vim', { 'for': ['python'] }
-Plug 'ctrlpvim/ctrlp.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 Plug 'davidhalter/jedi-vim', { 'for': ['python'] }
 Plug 'fisadev/vim-isort', { 'for': ['python'] }
 Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'javascript.jsx'] }
+Plug 'leafgarland/typescript-vim', { 'for': ['typescript'] }
+Plug 'Quramy/tsuquyomi', { 'for': ['typescript'] }
+Plug 'w0rp/ale'
+
+" Plug 'artur-shaik/vim-javacomplete2', {'for': 'java'} " Load only for java files
+Plug 'majutsushi/tagbar', {'for': 'java'}
+
 
 call plug#end()
 " }}}
@@ -154,7 +172,7 @@ call plug#end()
 " "   Range:   233 (darkest) ~ 239 (lightest)
 " "   Default: 237
 
-let g:seoul256_background = 238
+let g:seoul256_background = 235
 colorscheme seoul256
 " }}}
 
@@ -163,7 +181,7 @@ nnoremap <leader>w :StripWhitespace<CR>
 " }}}
 
 " nerdtree {{{
-  " open up nerd tree with ,n with current dir as the working dir ( % symbol) 
+  " open up nerd tree with ,n with current dir as the working dir ( % symbol)
   nnoremap <leader>e :NERDTreeToggle %<CR>
   nnoremap <leader>f :NERDTreeFind<CR>
 
@@ -171,19 +189,19 @@ nnoremap <leader>w :StripWhitespace<CR>
 "}}}
 
 " syntastic {{{
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
- 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_loc_list_height = 5
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_aggregate_errors = 1 " aggregate all errors to one list
-let g:syntastic_javascript_checkers = ['eslint']
-let g:syntastic_python_checkers = ['python', 'flake8'] 
-let g:syntastic_html_tidy_ignore_errors = ['proprietary attribute "ng-'] 
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
+"
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_loc_list_height = 5
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
+" let g:syntastic_aggregate_errors = 1 " aggregate all errors to one list
+" let g:syntastic_javascript_checkers = ['eslint']
+" let g:syntastic_python_checkers = ['python', 'flake8']
+" let g:syntastic_html_tidy_ignore_errors = ['proprietary attribute "ng-']
 " }}}
 
 " airline {{{
@@ -195,18 +213,55 @@ set statusline=%{fugitive#statusline()}
 " }}}
 
 " ctrlp {{{
-let g:ctrlp_custom_ignore = {
-    \ 'dir':  '\.(git|hg|svn)$\|coverage-report\|node_modules',
-    \ 'file': '\.(pyc|exe|so|dat)$'
-    \ }
+" let g:ctrlp_custom_ignore = {
+"     \ 'dir':  '\.(git|hg|svn)$\|coverage-report\|node_modules',
+"     \ 'file': '\.(pyc|exe|so|dat)$'
+"     \ }
 "}}}
 
-" isort {{{
+" isort python {{{
 let g:vim_isort_map = '<C-o>'
 let g:vim_isort_python_version = 'python3'
 " }}}
 
-" jedi-vim {{{
+" jedi-vim python {{{
 let g:jedi#auto_vim_configuration = 0
 set completeopt=menuone
+" }}}
+
+" fzf {{{
+nnoremap <leader>t :FZF<CR>
+" }}}
+
+" javacomplete {{{
+autocmd FileType java setlocal omnifunc=javacomplete#Complete
+autocmd FileType java JCEnable
+" }}}
+
+" ale config {{{
+" Shorten error/warning flags
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+" I have some custom icons for errors and warnings but feel free to change them.
+let g:ale_sign_error = '✘✘'
+let g:ale_sign_warning = '⚠⚠'
+
+" Disable or enable loclist at the bottom of vim
+" Comes down to personal preferance.
+let g:ale_open_list = 0
+let g:ale_loclist = 0
+
+
+" Setup compilers for languages
+
+let g:ale_linters = {
+      \  'cs':['syntax', 'semantic', 'issues'],
+      \  'python': ['pylint'],
+      \  'java': ['javac']
+      \ }
+" }}}
+
+" tagbar {{{
+" Ctrl-b to open tagbar
+map <C-b> :TagbarToggle<CR>
 " }}}
