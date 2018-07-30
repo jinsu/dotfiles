@@ -151,8 +151,8 @@ Plug 'ntpeters/vim-better-whitespace'
 Plug 'vim-scripts/indentpython.vim', { 'for': ['python'] }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'davidhalter/jedi-vim', { 'for': ['python'] }
-Plug 'fisadev/vim-isort', { 'for': ['python'] }
+" Plug 'davidhalter/jedi-vim', { 'for': ['python'] }
+" Plug 'fisadev/vim-isort', { 'for': ['python'] }
 Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'leafgarland/typescript-vim', { 'for': ['typescript'] }
 Plug 'Quramy/tsuquyomi', { 'for': ['typescript'] }
