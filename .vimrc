@@ -14,7 +14,10 @@ set wildmenu " visual autocomplete for command menu
 set encoding=utf-8
 set backspace=indent,eol,start "backspace through newlines
 set clipboard=unnamed " let osx access system clipboard
-" TODO: check existence of .vim/tmp and create
+
+silent !mkdir -p ~/.vim/tmp/swap > /dev/null 2>&1
+silent !mkdir -p ~/.vim/tmp/backup > /dev/null 2>&1
+silent !mkdir -p ~/.vim/tmp/undo > /dev/null 2>&1
 set directory=~/.vim/tmp/swap// " set swap directory. two slashes at the end ensures complete file path to avoid name collision.
 set backupdir=~/.vim/tmp/backup// " set backup directory.
 set undodir=~/.vim/tmp/undo// " set undo directory
